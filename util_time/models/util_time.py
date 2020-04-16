@@ -63,8 +63,8 @@ class UtilTime(models.AbstractModel):
 
     def _dateToStr(self, date_dt):
         return datetime.strftime(date_dt, DT_FORMAT)
-    
-    def _dateToTimeStr(self, date_str):        
+
+    def _dateToTimeStr(self, date_str):
         if len(date_str) <= 10:
             return "%s 00:00:00" % date_str
         return date_str
@@ -72,47 +72,51 @@ class UtilTime(models.AbstractModel):
     def _formatDate(self, date_str, format_str):
         dt = self._strToDate(date_str)
         return datetime.strftime(dt, format_str)
-    
+
     def _toDateTimeUser(self, time_str):
         user_tz = pytz.timezone(self.env.user.tz or pytz.utc)
-        return datetime.strftime(pytz.utc.localize(datetime.strptime(time_str,
-            DHM_FORMAT)).astimezone(user_tz),DHM_FORMAT)
-   
+        return datetime.strftime(
+            pytz.utc.localize(datetime.strptime(time_str, DHM_FORMAT)).astimezone(user_tz), DHM_FORMAT
+        )
+
     def _toDateUser(self, time_str):
         time_str = self._dateToStr(time_str)
         user_tz = pytz.timezone(self.env.user.tz or pytz.utc)
-        return datetime.strftime(pytz.utc.localize(datetime.strptime(time_str,
-            DHM_FORMAT)).astimezone(user_tz),DT_FORMAT)
-        
+        return datetime.strftime(
+            pytz.utc.localize(datetime.strptime(time_str, DHM_FORMAT)).astimezone(user_tz), DT_FORMAT
+        )
+
     def _toDateTimeUTC(self, time_str):
         user_tz = pytz.timezone(self.env.user.tz or pytz.utc)
-        return datetime.strftime(user_tz.localize(datetime.strptime(time_str,
-            DHM_FORMAT)).astimezone(pytz.utc),DHM_FORMAT)
-        
+        return datetime.strftime(
+            user_tz.localize(datetime.strptime(time_str, DHM_FORMAT)).astimezone(pytz.utc), DHM_FORMAT
+        )
+
     def _toDateUserUTC(self, time_str):
         time_str = self._dateToStr(time_str)
         user_tz = pytz.timezone(self.env.user.tz or pytz.utc)
-        return datetime.strftime(user_tz.localize(datetime.strptime(time_str,
-            DHM_FORMAT)).astimezone(pytz.utc),DT_FORMAT)
-    
+        return datetime.strftime(
+            user_tz.localize(datetime.strptime(time_str, DHM_FORMAT)).astimezone(pytz.utc), DT_FORMAT
+        )
+
     def _currentDate(self):
         return time.strftime(DT_FORMAT)
-    
+
     def _currentDateUTC(self):
         return datetime.utcnow().strftime(DT_FORMAT)
-    
+
     def _currentDateTime(self):
         return time.strftime(DHM_FORMAT)
-    
+
     def _currentDateTimeUTC(self):
         return datetime.utcnow().strftime(DHM_FORMAT)
-    
+
     def _firstOfMonth(self, date_str):
         if not date_str:
             return date_str
         date_dt = self._strToDate(date_str)
         return self._dateToStr(date(date_dt.year, date_dt.month, 1))
-    
+
     def _lastMonth(self, date_str):
         if not date_str:
             return date_str
@@ -122,9 +126,9 @@ class UtilTime(models.AbstractModel):
 
     def _firstOfLastMonth(self):
         return self._firstOfMonth(self._lastMonth(self._currentDate()))
-    
+
     def _nextDay(self, date_str):
         dt = self._strToDate(date_str)
-        dt_next =  date(dt.year, dt.month, dt.day);
+        dt_next = date(dt.year, dt.month, dt.day)
         dt_next += relativedelta(days=1)
         return self._dateToStr(dt_next)

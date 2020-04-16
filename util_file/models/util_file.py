@@ -55,13 +55,8 @@ class UtilFile(models.AbstractModel):
         return name
 
     def _getResource(self, path):
-        ad = os.path.abspath(
-            os.path.join(tools.ustr(tools.config["root_path"]), u"addons")
-        )
-        mod_path_list = map(
-            lambda m: os.path.abspath(tools.ustr(m.strip())),
-            tools.config["addons_path"].split(","),
-        )
+        ad = os.path.abspath(os.path.join(tools.ustr(tools.config["root_path"]), u"addons"))
+        mod_path_list = map(lambda m: os.path.abspath(tools.ustr(m.strip())), tools.config["addons_path"].split(","),)
         mod_path_list.append(ad)
         for mod_path in mod_path_list:
             module_path = mod_path + os.path.sep + path.split(os.path.sep)[0]
@@ -84,4 +79,3 @@ class UtilFile(models.AbstractModel):
                         "path": zip_path,
                         "zip": True,
                     }
-

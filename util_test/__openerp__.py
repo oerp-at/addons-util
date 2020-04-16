@@ -21,20 +21,20 @@
 ##############################################################################
 
 {
-    "name" : "Test Utilities",
-    "description":"""
+    "name": "Test Utilities",
+    "description": """
 Test Utilities
 ==============
 
 * Attachment download
 
 """,
-    "version" : "8.0.1.0.0",
-    "author" :  "funkring.net",
+    "version": "8.0.1.0.0",
+    "author": "funkring.net",
     "website": "https://github.com/o-erp",
-    "category" : "Base",
-    "depends" : ["util_file"],    
-    "data" : [],
+    "category": "Base",
+    "depends": ["util_file"],
+    "data": [],
     "auto_install": False,
-    "installable": True
+    "installable": True,
 }

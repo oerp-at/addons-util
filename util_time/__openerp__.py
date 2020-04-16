@@ -21,20 +21,20 @@
 ##############################################################################
 
 {
-    "name" : "Time Utilities",
-    "description":"""
+    "name": "Time Utilities",
+    "description": """
 Time Utilities
 ==============
 
 * Helper functions for date/time
 
 """,
-    "version" : "8.0.1.0.0",
-    "author" :  "funkring.net",
+    "version": "8.0.1.0.0",
+    "author": "funkring.net",
     "website": "https://github.com/o-erp",
-    "category" : "Base",
-    "depends" : [],    
-    "data" : [],
+    "category": "Base",
+    "depends": [],
+    "data": [],
     "auto_install": False,
-    "installable": True
+    "installable": True,
 }

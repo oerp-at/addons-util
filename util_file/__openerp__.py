@@ -21,8 +21,8 @@
 ##############################################################################
 
 {
-    "name" : "File Utilities",
-    "description":"""
+    "name": "File Utilities",
+    "description": """
 File Utilities
 ==============
 
@@ -30,12 +30,12 @@ File Utilities
 * Utils for finding files and resources
 
 """,
-    "version" : "8.0.1.0.0",
-    "author" :  "funkring.net",
+    "version": "8.0.1.0.0",
+    "author": "funkring.net",
     "website": "https://github.com/o-erp",
-    "category" : "Base",
-    "depends" : [],    
-    "data" : [],
+    "category": "Base",
+    "depends": [],
+    "data": [],
     "auto_install": False,
-    "installable": True
+    "installable": True,
 }
