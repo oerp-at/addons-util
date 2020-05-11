@@ -44,7 +44,7 @@ class UtilFile(models.AbstractModel):
     )
     _re_name = re.compile("([^a-zA-Z0-9\-_ ,])|(_+$)")
 
-    def _cleanFileName(self, name):
+    def _clean_file_name(self, name):
         name = name.strip()
 
         for key, value in self._repl_name:
@@ -54,7 +54,7 @@ class UtilFile(models.AbstractModel):
         # name = re.sub("[^a-zA-Z0-9\-_ ,]","",name)
         return name
 
-    def _getResource(self, path):
+    def _get_resource(self, path):
         ad = os.path.abspath(os.path.join(tools.ustr(tools.config["root_path"]), u"addons"))
         mod_path_list = map(lambda m: os.path.abspath(tools.ustr(m.strip())), tools.config["addons_path"].split(","),)
         mod_path_list.append(ad)
