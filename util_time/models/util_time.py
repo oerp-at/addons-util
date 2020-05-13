@@ -164,5 +164,5 @@ class UtilTime(models.AbstractModel):
         if days:
             day_dt += relativedelta(days=days)
         if months:
-            day_dt += relativedelta(months=days)
+            day_dt += relativedelta(months=months)
         return self._date_to_str(day_dt)
