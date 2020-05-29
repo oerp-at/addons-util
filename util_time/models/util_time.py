@@ -149,7 +149,7 @@ class UtilTime(models.AbstractModel):
         return self._date_to_str(date(date_dt.year, date_dt.month, 1))
     
     def _first_of_last_month_str(self):
-        return self._first_of_month_str(self._last_month_str(self._current_date_str()))
+        return self._first_of_month_str(self._get_day_str(months=-1))
 
     def _next_day_str(self, date_str):
         date_dt = self._str_to_date(date_str)
