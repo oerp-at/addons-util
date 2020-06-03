@@ -8,8 +8,7 @@
     'category': 'Base',
     'author': 'funkring',
     'maintainer': 'funkring',
-    'website': '',
-    'license': 'APGL-3',
+    'website': 'https://github.com/oerp-at',    
     'contributors': [
         'funkring',
     ],    
