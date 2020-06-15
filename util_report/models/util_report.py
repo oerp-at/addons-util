@@ -11,7 +11,7 @@ class UtilReport(models.AbstractModel):
     _name = "util.report"
     _inherit = "util.file"
 
-    def _getReportAttachment(self, report_name, obj=None):
+    def _get_report_attachment(self, report_name, obj=None):
         if not obj:
             obj = self
 
@@ -23,7 +23,7 @@ class UtilReport(models.AbstractModel):
                 return self.env["ir.attachment"].browse(attachment_id)
         return None
 
-    def _renderReport(self, report_name, objects=None, encode=False, add_pdf_attachments=False, report_title=None):
+    def _render_report(self, report_name, objects=None, encode=False, add_pdf_attachments=False, report_title=None):
 
         if not objects:
             objects = self
@@ -49,7 +49,7 @@ class UtilReport(models.AbstractModel):
             else:
                 name = objects.name_get()[0][1]
 
-            name = "%s.%s" % (self._cleanFileName(name), report_ext)
+            name = "%s.%s" % (self._clean_file_name(name), report_ext)
             if encode:
                 report_data = report_data and base64.encodestring(report_data) or None
             return (report_data, report_ext, name)

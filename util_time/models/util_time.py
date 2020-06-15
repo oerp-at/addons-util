@@ -2,19 +2,20 @@
 # © 2017 Funkring.net (Martin Reisenhofer <martin.reisenhofer@funkring.net>)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import time
-import pytz
-
-from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from datetime import date
+
+import time
+import dateutil
+from dateutil.relativedelta import relativedelta
+import pytz
 
 from odoo import models, fields, api, _
 
 
 DT_FORMAT = "%Y-%m-%d"
-DHM_FORMAT = "%Y-%m-%d %H:%M:%S"
-HM_FORMAT = "%H:%M:%S"
+DHMS_FORMAT = "%Y-%m-%d %H:%M:%S"
+HMS_FORMAT = "%H:%M:%S"
 HM_FORMAT_SHORT = "%H:%M"
 
 ISO_FORMAT_UTC = "%Y-%m-%dT%H:%M:%SZ"
@@ -23,7 +24,7 @@ ISO_FORMAT_UTC = "%Y-%m-%dT%H:%M:%SZ"
 class UtilTime(models.AbstractModel):
     _name = "util.time"
 
-    def _strToTime(self, time_str):
+    def _str_to_time(self, time_str):
         if not time_str:
             return time_str
         if isinstance(time_str, datetime):
@@ -31,88 +32,121 @@ class UtilTime(models.AbstractModel):
         pos = time_str.find(".")
         if pos > 0:
             time_str = time_str[:pos]
-        return datetime.strptime(time_str, DHM_FORMAT)
+        return datetime.strptime(time_str, DHMS_FORMAT)
 
-    def _timeToStr(self, time_dt):
-        return datetime.strftime(time_dt, DHM_FORMAT)
+    def _time_to_iso_str(self, time_str):
+        time_str = self._str_to_time(time_str)
+        return time.strftime(ISO_FORMAT_UTC)
+ 
+    def _iso_to_time_str(self, iso_str):
+        if not iso_str:
+            return None
+        val = dateutil.parser.parse(iso_str)
+        if not val.tzinfo:
+            val = pytz.utc.localize(val)
+        val = val.astimezone(pytz.utc).replace(tzinfo=None)
+        return self._time_to_str(val)
 
-    def _strToDate(self, date_str):
+    def _time_to_str(self, time_dt):
+        return datetime.strftime(time_dt, DHMS_FORMAT)
+
+    def _time_to_date_str(self, time_str):
+        time_dt = self._str_to_time(time_str)
+        date_dt = date(time_dt.year, time_dt.month, time_dt.day)
+        return self._date_to_str(date_dt)
+
+    def _str_to_date(self, date_str):
         if not date_str:
             return date_str
         if isinstance(date_str, datetime):
             return date_str
         if len(date_str) > 10:
-            date_str = self._timeToDateStr(date_str)
+            date_str = self._time_to_date_str(date_str)
         return datetime.strptime(date_str, DT_FORMAT)
 
-    def _dateToStr(self, date_dt):
+    def _date_to_str(self, date_dt):
         return datetime.strftime(date_dt, DT_FORMAT)
 
-    def _dateToTimeStr(self, date_str):
+    def _date_to_time_str(self, date_str):
         if len(date_str) <= 10:
             return "%s 00:00:00" % date_str
         return date_str
 
-    def _formatDate(self, date_str, format_str):
-        dt = self._strToDate(date_str)
-        return datetime.strftime(dt, format_str)
+    def _format_date_str(self, date_str, format_str):
+        date_dt = self._str_to_date(date_str)
+        return datetime.strftime(date_dt, format_str)
 
-    def _toDateTimeUser(self, time_str):
+    def _format_time_str(self, time_str, format_str):
+        time_dt = self._str_to_time(time_str)
+        return datetime.strftime(time_dt, format_str)
+
+    def _to_datetime_user_str(self, time_str):
+        # check if it is date, convert it to time
+        # if needed
+        if len(time_str) <= 10:
+            time_str = self._date_to_time_str(time_str)            
         user_tz = pytz.timezone(self.env.user.tz or pytz.utc)
         return datetime.strftime(
-            pytz.utc.localize(datetime.strptime(time_str, DHM_FORMAT)).astimezone(user_tz), DHM_FORMAT
+            pytz.utc.localize(datetime.strptime(time_str, DHMS_FORMAT)).astimezone(user_tz), DHMS_FORMAT
         )
 
-    def _toDateUser(self, time_str):
-        time_str = self._dateToStr(time_str)
+    def _to_date_user_str(self, time_str):
+        time_str = self._date_to_time_str(time_str)
         user_tz = pytz.timezone(self.env.user.tz or pytz.utc)
         return datetime.strftime(
-            pytz.utc.localize(datetime.strptime(time_str, DHM_FORMAT)).astimezone(user_tz), DT_FORMAT
+            pytz.utc.localize(datetime.strptime(time_str, DHMS_FORMAT)).astimezone(user_tz), DT_FORMAT
         )
 
-    def _toDateTimeUTC(self, time_str):
+    def _to_datetime_utc_str(self, time_str):
+        # check if it is date, convert it to time
+        # if needed
+        if len(time_str) <= 10:
+            time_str = self._date_to_time_str(time_str)  
         user_tz = pytz.timezone(self.env.user.tz or pytz.utc)
         return datetime.strftime(
-            user_tz.localize(datetime.strptime(time_str, DHM_FORMAT)).astimezone(pytz.utc), DHM_FORMAT
+            user_tz.localize(datetime.strptime(time_str, DHMS_FORMAT)).astimezone(pytz.utc), DHMS_FORMAT
         )
 
-    def _toDateUserUTC(self, time_str):
-        time_str = self._dateToStr(time_str)
+    def _to_date_user_utc_str(self, time_str):
+        time_str = self._date_to_str(time_str)
         user_tz = pytz.timezone(self.env.user.tz or pytz.utc)
         return datetime.strftime(
-            user_tz.localize(datetime.strptime(time_str, DHM_FORMAT)).astimezone(pytz.utc), DT_FORMAT
+            user_tz.localize(datetime.strptime(time_str, DHMS_FORMAT)).astimezone(pytz.utc), DT_FORMAT
         )
 
-    def _currentDate(self):
+    def _current_date_str(self):
         return time.strftime(DT_FORMAT)
 
-    def _currentDateUTC(self):
+    def _current_date_utc_str(self):
         return datetime.utcnow().strftime(DT_FORMAT)
 
-    def _currentDateTime(self):
-        return time.strftime(DHM_FORMAT)
+    def _current_datetime_str(self):
+        return time.strftime(DHMS_FORMAT)
 
-    def _currentDateTimeUTC(self):
-        return datetime.utcnow().strftime(DHM_FORMAT)
+    def _current_datetime_utc_str(self):
+        return datetime.utcnow().strftime(DHMS_FORMAT)
 
-    def _firstOfMonth(self, date_str):
+    def _first_of_month_str(self, date_str):
         if not date_str:
             return date_str
-        date_dt = self._strToDate(date_str)
-        return self._dateToStr(date(date_dt.year, date_dt.month, 1))
+        date_dt = self._str_to_date(date_str)
+        return self._date_to_str(date(date_dt.year, date_dt.month, 1))
+    
+    def _first_of_last_month_str(self):
+        return self._first_of_month_str(self._get_day_str(months=-1))
 
-    def _lastMonth(self, date_str):
+    def _next_day_str(self, date_str):
+        date_dt = self._str_to_date(date_str)
+        next_dt = date(date_dt.year, date_dt.month, date_dt.day)
+        next_dt += relativedelta(days=1)
+        return self._date_to_str(next_dt)
+
+    def _get_day_str(self, date_str=None, days=0, months=0):
         if not date_str:
-            return date_str
-        date_dt = self._strToDate(date_str)
-        date_dt -= relativedelta(months=1)
-        return self._dateToStr(date_dt)
-
-    def _firstOfLastMonth(self):
-        return self._firstOfMonth(self._lastMonth(self._currentDate()))
-
-    def _nextDay(self, date_str):
-        dt = self._strToDate(date_str)
-        dt_next = date(dt.year, dt.month, dt.day)
-        dt_next += relativedelta(days=1)
-        return self._dateToStr(dt_next)
+            return self._current_date_str()
+        day_dt = self._str_to_date(date_str)
+        if days:
+            day_dt += relativedelta(days=days)
+        if months:
+            day_dt += relativedelta(months=months)
+        return self._date_to_str(day_dt)
