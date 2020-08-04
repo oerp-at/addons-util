@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*--
-# © 2017 Funkring.net (Martin Reisenhofer <martin.reisenhofer@funkring.net>)
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3 or later (http://www.gnu.org/licenses/lgpl).
 
 import base64
 
-from odoo import models, fields, api, _
+from odoo import models
 
 
 class UtilReport(models.AbstractModel):

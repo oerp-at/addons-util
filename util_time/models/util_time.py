@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*--
-# © 2017 Funkring.net (Martin Reisenhofer <martin.reisenhofer@funkring.net>)
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# License LGPL-3 or later (http://www.gnu.org/licenses/lgpl).
 
 from datetime import datetime
 from datetime import date
@@ -10,8 +9,7 @@ import dateutil
 from dateutil.relativedelta import relativedelta
 import pytz
 
-from odoo import models, fields, api, _
-
+from odoo import models
 
 DT_FORMAT = "%Y-%m-%d"
 DHMS_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -37,7 +35,7 @@ class UtilTime(models.AbstractModel):
     def _time_to_iso_str(self, time_str):
         time_str = self._str_to_time(time_str)
         return time.strftime(ISO_FORMAT_UTC)
- 
+
     def _iso_to_time_str(self, iso_str):
         if not iso_str:
             return None
@@ -84,35 +82,31 @@ class UtilTime(models.AbstractModel):
         # check if it is date, convert it to time
         # if needed
         if len(time_str) <= 10:
-            time_str = self._date_to_time_str(time_str)            
+            time_str = self._date_to_time_str(time_str)
         user_tz = pytz.timezone(self.env.user.tz or pytz.utc)
         return datetime.strftime(
-            pytz.utc.localize(datetime.strptime(time_str, DHMS_FORMAT)).astimezone(user_tz), DHMS_FORMAT
-        )
+            pytz.utc.localize(datetime.strptime(time_str, DHMS_FORMAT)).astimezone(user_tz), DHMS_FORMAT)
 
     def _to_date_user_str(self, time_str):
         time_str = self._date_to_time_str(time_str)
         user_tz = pytz.timezone(self.env.user.tz or pytz.utc)
         return datetime.strftime(
-            pytz.utc.localize(datetime.strptime(time_str, DHMS_FORMAT)).astimezone(user_tz), DT_FORMAT
-        )
+            pytz.utc.localize(datetime.strptime(time_str, DHMS_FORMAT)).astimezone(user_tz), DT_FORMAT)
 
     def _to_datetime_utc_str(self, time_str):
         # check if it is date, convert it to time
         # if needed
         if len(time_str) <= 10:
-            time_str = self._date_to_time_str(time_str)  
+            time_str = self._date_to_time_str(time_str)
         user_tz = pytz.timezone(self.env.user.tz or pytz.utc)
         return datetime.strftime(
-            user_tz.localize(datetime.strptime(time_str, DHMS_FORMAT)).astimezone(pytz.utc), DHMS_FORMAT
-        )
+            user_tz.localize(datetime.strptime(time_str, DHMS_FORMAT)).astimezone(pytz.utc), DHMS_FORMAT)
 
     def _to_date_user_utc_str(self, time_str):
         time_str = self._date_to_str(time_str)
         user_tz = pytz.timezone(self.env.user.tz or pytz.utc)
         return datetime.strftime(
-            user_tz.localize(datetime.strptime(time_str, DHMS_FORMAT)).astimezone(pytz.utc), DT_FORMAT
-        )
+            user_tz.localize(datetime.strptime(time_str, DHMS_FORMAT)).astimezone(pytz.utc), DT_FORMAT)
 
     def _current_date_str(self):
         return time.strftime(DT_FORMAT)
@@ -131,7 +125,7 @@ class UtilTime(models.AbstractModel):
             return date_str
         date_dt = self._str_to_date(date_str)
         return self._date_to_str(date(date_dt.year, date_dt.month, 1))
-    
+
     def _first_of_last_month_str(self):
         return self._first_of_month_str(self._get_day_str(months=-1))
 
