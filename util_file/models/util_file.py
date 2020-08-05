@@ -5,7 +5,6 @@
 import re
 import os
 import sys
-import base64
 
 from odoo import models
 from odoo import tools
@@ -13,6 +12,7 @@ from odoo import tools
 
 class UtilFile(models.AbstractModel):
     _name = "util.file"
+    _description = "File Util"
     _repl_name = (
         ("Ö", "Oe"),
         ("Ü", "Ue"),

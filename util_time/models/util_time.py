@@ -21,6 +21,7 @@ ISO_FORMAT_UTC = "%Y-%m-%dT%H:%M:%SZ"
 
 class UtilTime(models.AbstractModel):
     _name = "util.time"
+    _description = "Time Util"
 
     def _str_to_time(self, time_str):
         if not time_str:

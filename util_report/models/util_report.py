@@ -9,6 +9,7 @@ from odoo import models
 class UtilReport(models.AbstractModel):
     _name = "util.report"
     _inherit = "util.file"
+    _description = "Report Util"
 
     def _get_report_attachment(self, report_name, obj=None):
         if not obj:
