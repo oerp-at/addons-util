@@ -11,5 +11,6 @@
     'website': 'https://github.com/oerp-at',      
     'installable': True,
     'auto_install': False,
-    'application': False
+    'application': False,
+    'depends': ['base']
 }

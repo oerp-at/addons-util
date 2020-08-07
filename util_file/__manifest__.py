@@ -9,5 +9,6 @@
     'author': 'funkring',
     'maintainer': 'funkring',
     'website': 'https://github.com/oerp-at',    
-    'installable': True   
+    'installable': True,
+    'depends': ['base']
 }

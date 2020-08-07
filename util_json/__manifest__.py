@@ -11,4 +11,5 @@
     'installable': True,
     'auto_install': False,
     'application': False,
+    'depends': ['base']
 }
