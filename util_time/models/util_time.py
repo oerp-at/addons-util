@@ -124,7 +124,7 @@ class UtilTime(models.AbstractModel):
         )
 
     def _to_date_user_utc_str(self, time_str):
-        time_str = self._date_to_str(time_str)
+        time_str = self._date_to_str(self._str_to_date(time_str))
         user_tz = pytz.timezone(self.env.user.tz or pytz.utc)
         return datetime.strftime(
             user_tz.localize(datetime.strptime(time_str, DHMS_FORMAT)).astimezone(pytz.utc), DT_FORMAT
